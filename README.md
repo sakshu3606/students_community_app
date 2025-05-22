@@ -48,18 +48,18 @@ Built with **Spring Boot (Java)** for backend and **Angular (latest version)** f
 
 ## ⚙️ Tech Stack
 
-## 🛠️ Backend
+### 🛠️ Backend
 - **Spring Boot** (Java)
 - **Hibernate & JPA**
 - **MySQL** (Relational Database)
 - **RESTful APIs**
 
-## 🌐 Frontend
+### 🌐 Frontend
 - **Angular** (latest version)
 - **TailwindCSS** or **Bootstrap**
 - **Reactive Forms** and **HTTP Client**
 
-## 🧪 Testing
+### 🧪 Testing
 
 - Use **Postman** collection provided for backend API testing.
 - Angular frontend is tested with built-in unit testing and form validation.
