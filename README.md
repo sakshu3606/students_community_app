@@ -1,59 +1,81 @@
-# StudentCommunityApp
+# 🎓 Student Community Web Application
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.3.
+Welcome to the **Student Community Platform** – a dynamic web application designed to empower college students to collaborate, contribute, and connect through a centralized digital space.
 
-## Development server
+---
 
-To start a local development server, run:
+## 🚀 Project Overview
 
-```bash
-ng serve
-```
+This application serves as a comprehensive platform where students can:
+- Join or manage clubs
+- Share academic resources
+- Participate in events and polls
+- Post messages, receive notifications
+- Contribute content to the student knowledge base
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Built with **Spring Boot (Java)** for backend and **Angular (latest version)** for frontend, this full-stack project integrates REST APIs, MySQL database, and modern UI design.
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 🧠 Features
 
-```bash
-ng generate component component-name
-```
+### 👤 Authentication
+- Login / Signup system with role-based access (Student / Admin)
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### 🏛️ Club Management
+- Create and manage clubs (e.g., Coding Club, Arts Club)
+- View club details and members
 
-```bash
-ng generate --help
-```
+### 📚 Academic Section
+- Upload and access learning resources (PDFs, Notes, Presentations)
+- Student contributions (e.g., articles, blog-style entries)
 
-## Building
+### 🗳️ Polls
+- Create and vote in active polls
+- Poll statistics and results
 
-To build the project run:
+### 📅 Events
+- Create upcoming student events
+- Event calendar and event detail pages
 
-```bash
-ng build
-```
+### 🔔 Notifications
+- Receive real-time announcements and alerts
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### 💬 Messaging
+- Internal message system for communication between users
 
-## Running unit tests
+---
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## ⚙️ Tech Stack
 
-```bash
-ng test
-```
+### Backend
+- **Spring Boot** (Java)
+- **Hibernate & JPA**
+- **MySQL** (Relational Database)
+- **RESTful APIs**
 
-## Running end-to-end tests
+### Frontend
+- **Angular** (latest version)
+- **TailwindCSS** or **Bootstrap**
+- **Reactive Forms** and **HTTP Client**
 
-For end-to-end (e2e) testing, run:
+## 🧪 Testing
 
-```bash
-ng e2e
-```
+- Use **Postman** collection provided for backend API testing.
+- Angular frontend is tested with built-in unit testing and form validation.
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+---
 
-## Additional Resources
+---
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## ✨ Contributors
+
+- **Amit Bhute** – Frontend Engineer  
+
+- **Naudit Bisen** – API Tester
+
+- **Bhuvan Girhepunje** – Backend Architect
+  [GitHub](https://github.com/bjg2003) | [LinkedIn](https://linkedin.com/in/bhuvangirhepunje)
+
+---
+
