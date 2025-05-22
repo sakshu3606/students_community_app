@@ -66,8 +66,6 @@ Built with **Spring Boot (Java)** for backend and **Angular (latest version)** f
 
 ---
 
----
-
 ## ✨ Contributors
 
 - **Amit Bhute** – Frontend Engineer  
@@ -76,6 +74,4 @@ Built with **Spring Boot (Java)** for backend and **Angular (latest version)** f
 
 - **Bhuvan Girhepunje** – Backend Architect
   [GitHub](https://github.com/bjg2003) | [LinkedIn](https://linkedin.com/in/bhuvangirhepunje)
-
----
 
