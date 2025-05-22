@@ -1,0 +1,189 @@
+<!-- home.component.html -->
+<div class="app-container">
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Left Column (Feed) -->
+    <div class="feed-column">
+      <h1 class="welcome-heading">Welcome back</h1>
+
+      <!-- Loading State -->
+      <div *ngIf="isLoading" class="loading-container">
+        <p>Loading posts...</p>
+      </div>
+
+      <!-- Error State -->
+      <div *ngIf="error" class="error-container">
+        <p>{{ error }}</p>
+        <button (click)="loadPosts()">Try Again</button>
+      </div>
+
+      <!-- No Posts State -->
+      <div *ngIf="!isLoading && !error && posts.length === 0" class="no-posts-container">
+        <p>No posts to display. Be the first to post something!</p>
+      </div>
+
+      <!-- Posts -->
+      <div class="posts-container">
+        <div *ngFor="let post of posts" class="post-card">
+          <div class="post-header">
+            <div class="post-user-info">
+              <img [src]="getUserById(post.userId).avatar || '/assets/avatar-default.jpg'" 
+                   alt="{{ getUserById(post.userId).name }}" 
+                   class="avatar">
+              <div class="user-details">
+                <div class="user-name">{{ getUserById(post.userId).name }}</div>
+                <div class="post-meta">
+                  <span class="post-date">{{ formatDate(post.timestamp) }}</span>
+                  <span class="post-visibility" [ngClass]="post.visibility.toLowerCase()">
+                    <i class="material-icons visibility-icon">
+                      {{ getVisibilityIcon(post.visibility) }}
+                    </i>
+                    {{ post.visibility }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="post-category" [ngClass]="post.category.toLowerCase()">
+              {{ post.category }}
+            </div>
+          </div>
+
+          <!-- Post Title -->
+          <div class="post-title">
+            <h3>{{ post.title }}</h3>
+          </div>
+
+          <div class="post-content">
+            <p>{{ post.content }}</p>
+            <div *ngIf="post.imageUrl" class="post-image-container">
+              <img [src]="post.imageUrl" alt="Post image" class="post-image">
+            </div>
+          </div>
+
+          <!-- Tags -->
+          <div *ngIf="post.tags && post.tags.length > 0" class="post-tags">
+            <span *ngFor="let tag of post.tags" class="tag">
+              #{{ tag }}
+            </span>
+          </div>
+
+          <div class="post-stats">
+            <div class="likes">
+              <i class="material-icons">favorite</i>
+              <span>{{ post.likes }} Likes</span>
+            </div>
+            <div class="comments-count">
+              <i class="material-icons">chat_bubble</i>
+              <span>{{ post.comments.length }} comments</span>
+            </div>
+          </div>
+
+          <div class="post-actions">
+            <button class="action-btn" [class.active]="post.liked" (click)="likePost(post)">
+              <i class="material-icons">favorite_border</i>
+              <span>Like</span>
+            </button>
+            <button class="action-btn" (click)="toggleComments(post)">
+              <i class="material-icons">comment</i>
+              <span>Comment</span>
+            </button>
+            <button class="action-btn" (click)="sharePost(post)">
+              <i class="material-icons">share</i>
+              <span>Share</span>
+            </button>
+          </div>
+
+          <!-- Comments -->
+          <div *ngIf="post.showComments" class="comments-container">
+            <div *ngIf="post.comments.length > 0">
+              <div *ngFor="let comment of post.comments" class="comment">
+                <img [src]="getUserById(comment.userId).avatar || '/assets/avatar-default.jpg'" 
+                     alt="{{ getUserById(comment.userId).name }}" 
+                     class="comment-avatar">
+                <div class="comment-content">
+                  <div class="comment-user">{{ getUserById(comment.userId).name }}</div>
+                  <div class="comment-text">{{ comment.content }}</div>
+                  <div class="comment-date">{{ formatDate(comment.timestamp) }}</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Add Comment -->
+            <div class="add-comment">
+              <img [src]="currentUser.avatar || '/assets/avatar-default.jpg'" 
+                   alt="{{ currentUser.name }}" 
+                   class="comment-avatar">
+              <div class="comment-input-container">
+                <textarea 
+                  [(ngModel)]="post.newComment" 
+                  placeholder="Add a comment..."
+                  rows="1"
+                  (input)="autoResizeTextarea($event)"
+                ></textarea>
+                <button class="post-comment-btn" (click)="addComment(post)" [disabled]="!post.newComment?.trim()">
+                  <i class="material-icons">send</i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column (Sidebar) -->
+    <div class="sidebar-column">
+      <!-- Upcoming Events -->
+      <div class="sidebar-section">
+        <h3 class="sidebar-heading">Upcoming Events</h3>
+        <div *ngIf="upcomingEvents.length === 0" class="no-events">
+          No upcoming events
+        </div>
+        <div *ngFor="let event of upcomingEvents" class="event-card">
+          <img [src]="event.image" alt="{{ event.title }}" class="event-image">
+          <div class="event-details">
+            <div class="event-title">{{ event.title }}</div>
+            <div class="event-date">{{ event.dateRange }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Suggestions -->
+      <div class="sidebar-section">
+        <h3 class="sidebar-heading">Suggestions</h3>
+        <div *ngIf="suggestions.length === 0" class="no-suggestions">
+          No suggestions at the moment
+        </div>
+        <div *ngFor="let user of suggestions" class="suggestion-card">
+          <div class="suggestion-user" (click)="openChat(user)">
+            <img [src]="user.avatar || '/assets/avatar-default.jpg'" alt="{{ user.name }}" class="suggestion-avatar">
+            <div class="suggestion-details">
+              <div class="suggestion-name">{{ user.name }}</div>
+              <div class="suggestion-department">{{ user.department }}</div>
+            </div>
+          </div>
+          <div class="suggestion-action">
+            <!-- Only show one type of button based on friend status -->
+            <button *ngIf="!user.isFriend" class="friend-request-btn" (click)="sendFriendRequest(user)">
+              Send friend request
+            </button>
+            <span *ngIf="user.isFriend" class="friends-label">
+              Friends <i class="material-icons">check</i>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ChatBox Component -->
+  <app-chatbox
+    [currentUser]="currentUser"
+    [users]="users"
+    [messages]="messages"
+    [activeChatUser]="activeChatUser"
+    (closeChat)="closeChat()"
+    (openChat)="openChat($event)"
+    (sendNewMessage)="sendMessageFromChatbox($event)"
+  ></app-chatbox>
+</div>

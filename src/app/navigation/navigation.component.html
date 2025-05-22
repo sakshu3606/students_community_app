@@ -1,0 +1,114 @@
+<!-- navigation.component.html -->
+<div class="app-container" [class.sidebar-collapsed]="isSidebarCollapsed" [class.mobile]="isMobileView" [class.mobile-sidebar-open]="isMobileSidebarOpen">
+  <!-- Top Navigation Bar -->
+  <header class="top-navbar">
+    <div class="left-section">
+      <button class="menu-toggle" (click)="toggleSidebar()">
+        <i class="material-icons">menu</i>
+      </button>
+      
+      <div class="logo-container">
+        <img src="logo.jpg" alt="Student Community Logo" class="app-logo">
+        <h1 class="app-title">Student Community</h1>
+      </div>
+    </div>
+    
+    <div class="right-section">
+      <div class="search-container">
+        <form (submit)="onSearch(); $event.preventDefault()">
+          <div class="search-input-wrapper">
+            <i class="material-icons search-icon">search</i>
+            <input
+              type="text"
+              [(ngModel)]="searchQuery"
+              name="searchQuery"
+              placeholder="Search..."
+              class="search-input"
+              (input)="onSearchInputChange()"
+            >
+            <button 
+              *ngIf="searchQuery" 
+              type="button" 
+              class="clear-search" 
+              (click)="clearSearch(); $event.stopPropagation()">
+              <i class="material-icons">close</i>
+            </button>
+          </div>
+        </form>
+        
+        <!-- Add the search dropdown component -->
+        <app-search-dropdown></app-search-dropdown>
+      </div>
+      
+      <div class="action-buttons">
+        <button class="create-post-btn" (click)="openCreatePostModal()">
+          <i class="material-icons">add</i>
+          <span class="btn-text">Create Post</span>
+        </button>
+        
+        <button class="notification-btn" (click)="openNotifications()">
+          <i class="material-icons">notifications</i>
+          <span *ngIf="notificationCount > 0" class="notification-badge">{{ notificationCount }}</span>
+        </button>
+        
+        <div class="profile-container">
+          <button class="profile-btn">
+            <div class="avatar">
+              <img src="s3.png" [alt]="user.name + '\'s avatar'" onerror="this.src='s3.png'">
+            </div>
+            <span class="profile-name">{{ user.name }}</span>
+            <i class="material-icons dropdown-icon">arrow_drop_down</i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  <!-- Overlay for mobile navigation -->
+  <div class="mobile-overlay" *ngIf="isMobileView && isMobileSidebarOpen" (click)="closeMobileSidebar()"></div>
+  
+  <!-- Side Navigation Bar -->
+  <aside class="side-navbar">
+    <nav class="nav-links">
+      <ul>
+        <li *ngFor="let item of navItems">
+          <a [routerLink]="item.route" routerLinkActive="active" (click)="closeMobileSidebar()">
+            <i class="material-icons nav-icon">{{ item.icon }}</i>
+            <span class="nav-label">{{ item.label }}</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    
+    <div class="sidebar-footer">
+      <button class="logout-btn" (click)="logout()">
+        <i class="material-icons">logout</i>
+        <span class="btn-text">Logout</span>
+      </button>
+    </div>
+  </aside>
+  
+  <!-- Main Content Area -->
+  <main class="main-content">
+    <!-- Router outlet would go here -->
+    <router-outlet></router-outlet>
+  </main>
+  
+  <!-- Create Post Modal -->
+  <app-post-creation 
+    *ngIf="showCreatePostModal" 
+    (closeModal)="closeCreatePostModal()" 
+    (postCreated)="handleNewPost($event)">
+  </app-post-creation>
+  
+  <!-- Add the Chat Component -->
+  <app-chatbox
+    [currentUser]="currentUser"
+    [users]="chatUsers"
+    [messages]="chatMessages"
+    [activeChatUser]="activeChatUser"
+    (closeChat)="handleCloseChat()"
+    (openChat)="handleOpenChat($event)"
+    (sendNewMessage)="handleSendMessage($event)">
+  </app-chatbox>
+</div>

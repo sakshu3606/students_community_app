@@ -1,0 +1,35 @@
+<!-- components/poll-card/poll-card.component.html -->
+<div class="poll-card">
+    <div class="poll-header">
+      <h3 class="poll-question">{{ poll.question }}</h3>
+      <div class="poll-votes">{{ poll.totalVotes }} votes</div>
+    </div>
+    
+    <div class="poll-options">
+      <div class="poll-option" *ngFor="let option of poll.options" (click)="onVote(option)">
+        <div class="option-text">{{ option.text }}</div>
+        <div class="option-bar-container">
+          <div
+            class="option-bar"
+            [style.width.%]="calculatePercentage(option.votes, poll.totalVotes)"
+          ></div>
+        </div>
+        <div class="option-percentage">{{ calculatePercentage(option.votes, poll.totalVotes) }}%</div>
+      </div>
+    </div>
+    
+    <div class="poll-footer">
+      <div class="poll-actions" *ngIf="isCurrentUserPoll">
+        <button class="edit-btn" (click)="onEdit()">
+          <i class="bi bi-pencil"></i> Edit
+        </button>
+        <button class="delete-btn" (click)="onDelete()">
+          <i class="bi bi-trash"></i> Delete
+        </button>
+      </div>
+      <div class="poll-author-info">
+        <span class="poll-author">Uploaded by {{ poll.createdBy }}</span>
+        <div class="author-avatar"></div>
+      </div>
+    </div>
+  </div>

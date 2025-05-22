@@ -1,0 +1,122 @@
+<!-- profile.component.html -->
+<div class="profile-page">
+  <!-- Left sidebar with user info -->
+  <div class="profile-sidebar">
+    <div class="profile-header">
+      <div class="avatar-container">
+        <img [src]="user.avatar" alt="Profile avatar" class="avatar">
+        <button class="change-avatar-btn">
+          <i class="fas fa-camera"></i>
+        </button>
+      </div>
+      <h2 class="username">{{user.username}}</h2>
+      <div class="role-badge">{{user.role}}</div>
+      <p class="bio">{{user.bio}}</p>
+      
+      <button class="edit-profile-btn">Edit profile</button>
+    </div>
+    
+    <div class="profile-about">
+      <h3 class="section-title">ABOUT</h3>
+      
+      <div class="info-item">
+        <i class="fas fa-user info-icon"></i>
+        <span>{{user.fullName}}</span>
+      </div>
+      
+      <div class="info-item">
+        <i class="fas fa-map-marker-alt info-icon"></i>
+        <span>{{user.location}}</span>
+      </div>
+      
+      <div class="info-item">
+        <i class="fas fa-graduation-cap info-icon"></i>
+        <span>{{user.education}}</span>
+      </div>
+      
+      <div class="info-item">
+        <i class="fas fa-code info-icon"></i>
+        <span>{{user.skills}}</span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Right content area -->
+  <div class="profile-content">
+    <!-- Tabs navigation -->
+    <div class="profile-tabs">
+      <button 
+        class="tab-btn" 
+        [class.active]="currentTab === 'posts'"
+        (click)="changeTab('posts')">
+        <span class="count">{{user.postsCount}}</span>
+        <span class="label">Posts</span>
+      </button>
+      
+      <button 
+        class="tab-btn" 
+        [class.active]="currentTab === 'friends'"
+        (click)="changeTab('friends')">
+        <span class="count">{{user.friendsCount}}</span>
+        <span class="label">Friends</span>
+      </button>
+    </div>
+    
+    <!-- Posts tab content -->
+    <div class="tab-content" *ngIf="currentTab === 'posts'">
+      <div class="post-card" *ngFor="let post of posts">
+        <div class="post-header">
+          <div class="post-user">
+            <img [src]="user.avatar" alt="User" class="post-avatar">
+            <div class="post-user-info">
+              <span class="post-username">{{user.username}}</span>
+              <span class="post-date">{{formatDate(post.date)}}</span>
+            </div>
+          </div>
+          
+          <button class="delete-post-btn">Delete post</button>
+        </div>
+        
+        <div class="post-content">
+          <p [innerHTML]="post.content.replace('\n', '<br>')"></p>
+          
+          <!-- Post image placeholder -->
+          <div class="post-image-container" *ngIf="post.id === 1">
+            <div class="post-image-placeholder"></div>
+          </div>
+        </div>
+        
+        <div class="post-stats">
+          <div class="stat-item">
+            <i class="fas fa-heart"></i>
+            <span>{{post.likes}} Likes</span>
+          </div>
+          
+          <div class="stat-item">
+            <i class="fas fa-comment"></i>
+            <span>{{post.comments}} comments</span>
+          </div>
+          
+          <div class="stat-item">
+            <i class="fas fa-share"></i>
+            <span>Share</span>
+          </div>
+        </div>
+        
+        <div class="post-comment-form">
+          <input 
+            type="text" 
+            [(ngModel)]="commentText"
+            placeholder="Add a comment" 
+            class="comment-input">
+          <button class="post-btn" [disabled]="!commentText.trim()" (click)="submitComment()">Post</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Friends tab content -->
+    <div class="tab-content" *ngIf="currentTab === 'friends'">
+      <p class="empty-state-message">No friends to display.</p>
+    </div>
+  </div>
+</div>

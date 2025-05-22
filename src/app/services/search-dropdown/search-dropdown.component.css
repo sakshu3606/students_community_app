@@ -1,0 +1,372 @@
+/* Search Dropdown */
+.search-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: #1a1a1a;  /* Dark background */
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);  /* Darker shadow */
+  opacity: 0;
+  transform: translateY(-10px);
+  visibility: hidden;
+  transition: all 0.2s ease-in-out;
+  z-index: 100;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.search-dropdown.active {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+}
+
+/* Search Results */
+.search-results {
+  padding: 16px;
+}
+
+.search-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #333333;  /* Darker border */
+}
+
+.search-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #e1e1e1;  /* Light color for text */
+}
+
+.search-header a {
+  font-size: 0.85rem;
+  color: #1565c0;  /* Blue color for links */
+  text-decoration: none;
+}
+
+.search-header a:hover {
+  text-decoration: underline;
+}
+
+.searching-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  gap: 12px;
+  color: #e1e1e1;  /* Light color */
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #1565c0;  /* Blue color */
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.no-results {
+  text-align: center;
+  padding: 20px;
+  color: #757575;
+}
+
+.results-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.preview-item {
+  display: flex;
+  gap: 12px;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  background-color: #333333;  /* Dark background */
+  color: #e1e1e1;  /* Light text color */
+}
+
+.preview-item:hover {
+  background-color: #444444;  /* Slightly lighter background */
+}
+
+/* Result Icon */
+.result-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #555555;  /* Darker icon background */
+  flex-shrink: 0;
+}
+
+.result-icon i {
+  font-size: 20px;
+  color: #e1e1e1;  /* Light icon color */
+}
+
+/* Type-specific Icons */
+.result-icon.post {
+  background-color: #0d47a1;  /* Blue background for posts */
+}
+
+.result-icon.post i {
+  color: #ffffff;
+}
+
+.result-icon.user {
+  background-color: #7b1fa2;  /* Purple for user */
+}
+
+.result-icon.user i {
+  color: #ffffff;
+}
+
+.result-icon.club {
+  background-color: #2e7d32;  /* Green for club */
+}
+
+.result-icon.club i {
+  color: #ffffff;
+}
+
+.result-icon.event {
+  background-color: #e65100;  /* Orange for event */
+}
+
+.result-icon.event i {
+  color: #ffffff;
+}
+
+.result-icon.academic {
+  background-color: #0277bd;  /* Blue for academic */
+}
+
+.result-icon.academic i {
+  color: #ffffff;
+}
+
+/* Result Details */
+.result-details {
+  flex: 1;
+}
+
+.result-details h4 {
+  margin: 0 0 4px 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #e1e1e1;  /* Light text color */
+}
+
+.result-details p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #757575;  /* Darker text for description */
+  line-height: 1.4;
+}
+
+/* Footer */
+.search-footer {
+  text-align: center;
+  margin-top: 16px;
+  padding-top: 8px;
+  border-top: 1px solid #333333;  /* Dark border */
+}
+
+.search-footer a {
+  color: #1565c0;  /* Blue links */
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.search-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Filters and Result List */
+.search-results-container {
+  padding: 20px;
+}
+
+.search-header h2 {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+  color: #e1e1e1;  /* Light color */
+}
+
+.search-filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.search-filters button {
+  padding: 8px 16px;
+  border: none;
+  background-color: #333333;  /* Dark background */
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #e1e1e1;  /* Light text color */
+  transition: all 0.2s;
+}
+
+.search-filters button.active {
+  background-color: #1565c0;  /* Blue when active */
+  color: white;
+}
+
+.results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.result-item {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 8px;
+  background-color: #222222;  /* Dark background */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  color: #e1e1e1;  /* Light text color */
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.result-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.result-image {
+  flex: 0 0 100px;
+  height: 100px;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.result-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.result-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.result-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.result-type {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background-color: #444444;  /* Darker background */
+  color: #e1e1e1;  /* Light text color */
+}
+
+.result-title {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.result-title a {
+  color: #1565c0;  /* Blue for links */
+  text-decoration: none;
+}
+
+.result-title a:hover {
+  text-decoration: underline;
+}
+
+.result-description {
+  color: #757575;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.result-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.author-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.author-info img {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+
+.result-date {
+  font-size: 0.85rem;
+  color: #757575;
+}
+
+/* Type-specific Styling */
+.result-item.post .result-type {
+  background-color: #0d47a1;  /* Blue */
+  color: white;
+}
+
+.result-item.user .result-type {
+  background-color: #7b1fa2;  /* Purple */
+  color: white;
+}
+
+.result-item.club .result-type {
+  background-color: #2e7d32;  /* Green */
+  color: white;
+}
+
+.result-item.event .result-type {
+  background-color: #e65100;  /* Orange */
+  color: white;
+}
+
+.result-item.academic .result-type {
+  background-color: #0277bd;  /* Blue */
+  color: white;
+}
+
+/* Mobile View */
+@media (max-width: 768px) {
+  .result-item {
+      flex-direction: column;
+  }
+
+  .result-image {
+      width: 100%;
+      flex: initial;
+  }
+}

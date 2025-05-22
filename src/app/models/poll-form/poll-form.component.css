@@ -1,0 +1,148 @@
+.create-poll-form {
+  background-color: #0b0f1a;
+  border-radius: 10px;
+  padding: 2rem;
+  margin: 2rem 0;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease-in-out;
+}
+
+.create-poll-form h2 {
+  font-size: 1.8rem;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+  transition: color 0.3s ease;
+}
+
+.create-poll-form h3 {
+  font-size: 1.4rem;
+  color: #4a90ff;
+  margin-bottom: 1rem;
+  transition: color 0.3s ease;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #4a90ff;
+  transition: color 0.3s ease;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: #121827;
+  border: 1px solid #1e2a44;
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #4a90ff;
+  background-color: #10141f;
+}
+
+.options-container {
+  margin-bottom: 1.5rem;
+}
+
+.option-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.option-row input {
+  flex: 1;
+  padding: 0.75rem;
+  background-color: #121827;
+  border: 1px solid #1e2a44;
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.option-row input:focus {
+  border-color: #4a90ff;
+  background-color: #10141f;
+}
+
+.remove-option-btn {
+  background-color: transparent;
+  color: #ff5c5c;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  padding: 0.3rem;
+  transition: color 0.2s ease;
+}
+
+.remove-option-btn:hover {
+  color: #ff2e2e;
+}
+
+.add-option-btn {
+  background-color: transparent;
+  color: #4a90ff;
+  border: 1px solid #4a90ff;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.add-option-btn:hover {
+  background-color: rgba(74, 144, 255, 0.15);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.cancel-btn {
+  background-color: transparent;
+  color: #b0b3c0;
+  border: 1px solid #b0b3c0;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cancel-btn:hover {
+  background-color: rgba(176, 179, 192, 0.1);
+}
+
+.submit-poll-btn {
+  background-color: #4a90ff;
+  color: #ffffff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.submit-poll-btn:hover {
+  background-color: #3a7bdd;
+  transform: translateY(-2px);
+}

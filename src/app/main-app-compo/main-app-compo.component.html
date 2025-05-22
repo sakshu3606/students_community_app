@@ -1,0 +1,19 @@
+<div class="app-layout">
+  <!-- <app-header></app-header> -->
+  <div class="main-app">
+    <app-navigation></app-navigation>
+    <div class="content">
+      <nav class="sidebar">
+        <a [routerLink]="['home']" routerLinkActive="active">Home</a>
+        <a [routerLink]="['academic']" routerLinkActive="active">Academic</a>
+        <a [routerLink]="['clubs']" routerLinkActive="active">Clubs</a>
+        <a [routerLink]="['events']" routerLinkActive="active">Events</a>
+        <a [routerLink]="['polling']" routerLinkActive="active">Polling</a>
+        <a [routerLink]="['/profile']" routerLinkActive="active">My Profile</a>
+      </nav>
+      <main class="main-content">
+        <router-outlet></router-outlet>
+      </main>
+    </div>
+  </div>
+</div>

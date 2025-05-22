@@ -1,0 +1,39 @@
+<div class="search-dropdown" [class.active]="isActive">
+    <div class="search-results">
+      <div class="search-header">
+        <h3>Quick Results</h3>
+        <a [routerLink]="['/search']" [queryParams]="{q: searchQuery}" (click)="viewAllResults()">
+          View all results
+        </a>
+      </div>
+      
+      <div *ngIf="isSearching" class="searching-indicator">
+        <div class="spinner"></div>
+        <span>Searching...</span>
+      </div>
+      
+      <div *ngIf="!isSearching && results.length === 0 && searchQuery" class="no-results">
+        No results found for "{{ searchQuery }}"
+      </div>
+      
+      <div *ngIf="results.length > 0" class="results-preview">
+        <div *ngFor="let result of results.slice(0, 5)" class="preview-item" (click)="navigateToResult(result)">
+          <div class="result-icon" [ngClass]="result.type">
+            <i class="material-icons">
+              {{ getIconForType(result.type) }}
+            </i>
+          </div>
+          <div class="result-details">
+            <h4>{{ result.title }}</h4>
+            <p>{{ result.description | slice:0:60 }}{{ result.description.length > 60 ? '...' : '' }}</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="search-footer" *ngIf="results.length > 5">
+        <a [routerLink]="['/search']" [queryParams]="{q: searchQuery}" (click)="viewAllResults()">
+          View all {{ results.length }} results
+        </a>
+      </div>
+    </div>
+  </div>

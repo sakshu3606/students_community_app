@@ -1,0 +1,44 @@
+<!-- components/poll-form/poll-form.component.html -->
+<div class="create-poll-form">
+    <h2>{{ isUpdateMode ? 'Update poll' : 'Create a new poll' }}</h2>
+    
+    <div class="form-group">
+      <label for="pollQuestion">Question</label>
+      <input
+        type="text"
+        id="pollQuestion"
+        [(ngModel)]="formData.question"
+        placeholder="Enter your question here"
+      >
+    </div>
+    
+    <div class="options-container">
+      <h3>Options</h3>
+      
+      <div class="option-row" *ngFor="let option of formData.options; let i = index">
+        <input
+          type="text"
+          [(ngModel)]="option.text"
+          placeholder="Option text"
+        >
+        <button
+          class="remove-option-btn"
+          *ngIf="formData.options.length > 2"
+          (click)="removeOption(i)"
+        >
+          <i class="bi bi-trash"></i>
+        </button>
+      </div>
+      
+      <button class="add-option-btn" (click)="addOption()" *ngIf="formData.options.length < 5">
+        <i class="bi bi-plus-circle"></i> Add Option
+      </button>
+    </div>
+    
+    <div class="form-actions">
+      <button class="cancel-btn" (click)="onCancel()">Cancel</button>
+      <button class="submit-poll-btn" (click)="onSubmit()">
+        {{ isUpdateMode ? 'Update Poll' : 'Create Poll' }}
+      </button>
+    </div>
+  </div>

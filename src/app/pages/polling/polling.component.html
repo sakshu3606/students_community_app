@@ -1,0 +1,126 @@
+<div class="polling-container">
+  <h1 class="polling-title">Polling</h1>
+  <p class="polling-description">Raise an issue - get votes - make change</p>
+  
+  <div class="polling-actions">
+    <button class="btn btn-primary" (click)="toggleCreatePollForm()">
+      {{ showCreatePollForm ? 'Cancel' : 'Create poll' }}
+    </button>
+    
+    <button class="btn" [class.btn-active]="currentView === 'my'" (click)="toggleView('my')">
+      My Polls
+    </button>
+    
+    <button class="btn" [class.btn-active]="currentView === 'all'" (click)="toggleView('all')">
+      All Polls
+    </button>
+  </div>
+  
+  <!-- Loading indicator -->
+  <div class="loading-container" *ngIf="isLoading">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Error alert -->
+  <div class="alert alert-danger" *ngIf="error">
+    {{ error }}
+    <button class="close-alert" (click)="clearError()">×</button>
+  </div>
+  
+  <!-- Create/Edit Poll Form -->
+  <div *ngIf="showCreatePollForm" class="create-poll-form">
+    <h2>{{ editingPoll ? 'Edit Poll' : 'Create New Poll' }}</h2>
+    <form (submit)="$event.preventDefault(); editingPoll ? updatePoll() : createPoll()">
+      <div class="form-group">
+        <label for="question">Question</label>
+        <input 
+          type="text" 
+          id="question" 
+          class="form-control" 
+          [(ngModel)]="formPoll.question" 
+          name="question" 
+          required
+          placeholder="Enter your question here"
+        >
+      </div>
+      
+      <div class="form-group">
+        <label for="option1">Option 1</label>
+        <input 
+          type="text" 
+          id="option1" 
+          class="form-control" 
+          [(ngModel)]="formPoll.options[0].text" 
+          name="option1" 
+          required
+          placeholder="First option"
+        >
+      </div>
+      
+      <div class="form-group">
+        <label for="option2">Option 2</label>
+        <input 
+          type="text" 
+          id="option2" 
+          class="form-control" 
+          [(ngModel)]="formPoll.options[1].text" 
+          name="option2" 
+          required
+          placeholder="Second option"
+        >
+      </div>
+      
+      <div class="form-actions">
+        <button type="button" class="btn btn-cancel" (click)="toggleCreatePollForm()">Cancel</button>
+        <button type="submit" class="btn btn-success">{{ editingPoll ? 'Update Poll' : 'Create Poll' }}</button>
+      </div>
+    </form>
+  </div>
+  
+  <h2 class="section-title">{{ currentView === 'all' ? 'Ongoing Polls' : 'My Polls' }}</h2>
+  
+  <!-- Poll List -->
+  <div class="polls-list">
+    <div *ngFor="let poll of currentView === 'all' ? polls : myPolls" class="poll-card">
+      <h3>{{ poll.question }}</h3>
+      <p class="poll-metadata">
+        Posted by: {{ poll.user?.username || 'Anonymous' }} | 
+        Total votes: {{ getTotalVotes(poll) }}
+      </p>
+      
+      <div class="poll-options">
+        <div class="poll-option">
+          <div class="option-header">
+            <span class="option-text">{{ getOption1(poll) }}</span>
+            <span class="option-votes">{{ getOption1Votes(poll) }} votes ({{ calculatePercentage(getOption1Votes(poll), getTotalVotes(poll)) }})</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress" [style.width]="calculatePercentage(getOption1Votes(poll), getTotalVotes(poll))"></div>
+          </div>
+          <button class="btn btn-vote" (click)="voteForOption1(poll.id!)">Vote</button>
+        </div>
+        
+        <div class="poll-option">
+          <div class="option-header">
+            <span class="option-text">{{ getOption2(poll) }}</span>
+            <span class="option-votes">{{ getOption2Votes(poll) }} votes ({{ calculatePercentage(getOption2Votes(poll), getTotalVotes(poll)) }})</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress" [style.width]="calculatePercentage(getOption2Votes(poll), getTotalVotes(poll))"></div>
+          </div>
+          <button class="btn btn-vote" (click)="voteForOption2(poll.id!)">Vote</button>
+        </div>
+      </div>
+      
+      <!-- Edit/Delete buttons (only for user's own polls) -->
+      <div *ngIf="poll.user?.userId === getCurrentUserId()" class="poll-actions">
+        <button class="btn btn-edit" (click)="editPoll(poll)">Edit</button>
+        <button class="btn btn-delete" (click)="deletePoll(poll.id!)">Delete</button>
+      </div>
+    </div>
+    
+    <div *ngIf="(currentView === 'all' && polls.length === 0) || (currentView === 'my' && myPolls.length === 0)" class="no-polls">
+      <p>No polls found. {{ currentView === 'my' ? 'Create a new poll to get started!' : 'Check back later!' }}</p>
+    </div>
+  </div>
+</div>

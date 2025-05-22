@@ -1,0 +1,87 @@
+<!-- chatbox.component.html -->
+<!-- Chat Toggle Button -->
+<button class="chat-toggle-btn" (click)="onToggleChatPanel()">
+  <i class="bi" [ngClass]="isOpen ? 'bi-x' : 'bi-chat-dots-fill'"></i>
+  <span>Chat</span>
+</button>
+
+<!-- Chat Panel -->
+<div class="chat-panel" [class.open]="isOpen">
+  <!-- User List (Only shown when no active chat) -->
+  <div class="chat-users-list" *ngIf="!activeChatUser">
+    <div class="chat-panel-header">
+      <h3>Messages</h3>
+      <button class="close-btn" (click)="onToggleChatPanel()">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+    <div class="users-list">
+      <div 
+        *ngFor="let user of users" 
+        class="user-item" 
+        (click)="selectUser(user)"
+      >
+        <img [src]="user.avatar" alt="{{ user.name }}" class="chat-avatar">
+        <div class="user-info">
+          <div class="user-name">{{ user.name }}</div>
+          <div class="user-status" [class.online]="isUserOnline(user.id)">
+            {{ isUserOnline(user.id) ? 'Online' : 'Offline' }}
+          </div>
+        </div>
+      </div>
+      <div *ngIf="users.length === 0" class="no-users">
+        <p>No users available</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chat Box (Only shown when there's an active chat) -->
+  <div class="chat-box" *ngIf="activeChatUser">
+    <div class="chat-header">
+      <div class="chat-user-info">
+        <img [src]="activeChatUser.avatar" alt="{{ activeChatUser.name }}" class="chat-avatar">
+        <div class="chat-user-details">
+          <div class="chat-user-name">{{ activeChatUser.name }}</div>
+          <div class="chat-user-status" [class.online]="isUserOnline(activeChatUser.id)">
+            {{ isUserOnline(activeChatUser.id) ? 'Online' : 'Offline' }}
+          </div>
+        </div>
+      </div>
+      <div class="chat-actions">
+        <button class="back-btn" (click)="onCloseChat()">
+          <i class="bi bi-arrow-left"></i>
+        </button>
+        <button class="close-btn" (click)="onToggleChatPanel()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="chat-messages">
+      <div *ngFor="let message of getMessagesForUser(activeChatUser.id)"
+        class="chat-message"
+        [class.outgoing]="message.senderId === currentUser.id">
+        <div class="message-content">
+          <p>{{ message.content }}</p>
+          <span class="message-time">{{ formatMessageTime(message.timestamp) }}</span>
+        </div>
+      </div>
+
+      <div *ngIf="getMessagesForUser(activeChatUser.id).length === 0" class="no-messages">
+        <p>No messages yet. Start a conversation!</p>
+      </div>
+    </div>
+
+    <div class="chat-input">
+      <textarea
+        [(ngModel)]="newMessage"
+        placeholder="Type a message..."
+        rows="1"
+        (keydown.enter)="$event.preventDefault(); onSendMessage();"
+      ></textarea>
+      <button class="send-message-btn" (click)="onSendMessage()">
+        <i class="bi bi-send-fill"></i>
+      </button>
+    </div>
+  </div>
+</div>

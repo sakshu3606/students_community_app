@@ -1,0 +1,47 @@
+<div class="search-results-container">
+  <div class="search-header">
+    <h2>Search Results for "{{ currentQuery }}"</h2>
+    <p *ngIf="results.length === 0 && !isSearching">No results found</p>
+    <p *ngIf="isSearching">Searching...</p>
+  </div>
+  
+  <div class="search-filters">
+    <button
+      *ngFor="let filter of filters"
+      [class.active]="activeFilter === filter.value"
+      (click)="applyFilter(filter.value)">
+      {{ filter.label }}
+    </button>
+  </div>
+  
+  <div class="results-list">
+    <!-- Add debugging info -->
+    <p *ngIf="filteredResults.length === 0 && !isSearching">
+      No results match the selected filter.
+    </p>
+    
+    <div *ngFor="let result of filteredResults" class="result-item" [ngClass]="result.type">
+      <div class="result-image" *ngIf="result.imageUrl">
+        <img [src]="result.imageUrl" [alt]="result.title">
+      </div>
+      <div class="result-content">
+        <div class="result-header">
+          <span class="result-type">{{ result.type }}</span>
+          <h3 class="result-title">
+            <a [routerLink]="[result.url]">{{ result.title }}</a>
+          </h3>
+        </div>
+        <p class="result-description">{{ result.description }}</p>
+        <div class="result-footer" *ngIf="result.author">
+          <div class="author-info">
+            <img [src]="result.author.avatar" [alt]="result.author.name">
+            <span>{{ result.author.name }}</span>
+          </div>
+          <span class="result-date" *ngIf="result.createdAt">
+            {{ result.createdAt | date:'mediumDate' }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,142 @@
+/* Dark Theme Styles with Blue and Black Focus */
+
+.register-container {
+  background-color: #0a0e12; /* Darker background for container */
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.register-card {
+  background-color: #10161a; /* Darker shade of black for the card */
+  color: #c9d1d9; /* Lighter text for better contrast */
+  padding: 2rem;
+  border-radius: 1rem;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8); /* Enhanced shadow */
+}
+
+.logo-container h1 {
+  color: #58a6ff; /* Bright blue for the logo */
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.instructions {
+  background-color: #151a1f; /* Even darker background */
+  border-left: 4px solid #2563eb; /* Bright blue accent */
+  padding: 1.25rem;
+  border-radius: 0.5rem;
+  margin-bottom: 2rem;
+  color: #b3b3b3; /* Lighter gray text */
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.instructions h2 {
+  color: #79c0ff; /* Lighter blue for headings */
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+}
+
+.instructions ol {
+  padding-left: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.instructions ol li {
+  margin-bottom: 0.75rem;
+}
+
+.instructions p {
+  font-weight: 600;
+  margin-top: 1rem;
+  color: #e0e0e0; /* Lighter text for instructions */
+}
+
+.form-group {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 0.3rem;
+  font-weight: 500;
+  color: #c9d1d9; /* Light label text */
+}
+
+.form-group input {
+  background-color: #1a1f26; /* Dark background for input */
+  color: #f0f6fc; /* Light text for input */
+  border: 1px solid #30363d; /* Slightly lighter border */
+  border-radius: 0.5rem;
+  padding: 0.6rem 0.75rem;
+}
+
+.name-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.name-row .form-group {
+  flex: 1;
+}
+
+.name-row button {
+  flex: 1;
+  padding: 0.6rem;
+  border: 1px solid #30363d;
+  background-color: #10161a; /* Darker background for buttons */
+  border-radius: 0.5rem;
+  color: #f0f6fc;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.name-row button:hover {
+  background-color: #2d333b; /* Darker hover background */
+}
+
+.name-row button.selected {
+  background-color: #2563eb; /* Blue background for selected button */
+  color: white;
+  border-color: #2563eb;
+}
+
+.register-button {
+  background-color: #2563eb; /* Blue button background */
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-weight: bold;
+  width: 100%;
+  margin-top: 1rem;
+  transition: background-color 0.2s;
+}
+
+.register-button:hover {
+  background-color: #1d4f94; /* Darker blue on hover */
+}
+
+.login-prompt {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: #f0f6fc; /* Light text for login prompt */
+}
+
+.login-link {
+  background: none;
+  border: none;
+  color: #58a6ff; /* Bright blue for login link */
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 600;
+}

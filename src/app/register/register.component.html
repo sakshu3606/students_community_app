@@ -1,0 +1,237 @@
+<div class="register-container">
+  <div class="register-card">
+    <div *ngIf="registrationSuccess" class="success-message">
+      🎉 Registration successful! You can now log in to the Student Community.
+    </div>
+
+    <!-- <div *ngIf="registrationError" class="error-message">
+      ❌ {{ registrationError }}
+    </div> -->
+
+    <div class="logo-container">
+      <h1>Join Student Community</h1>
+    </div>
+
+    <div class="instructions">
+      <h2>Sign up Instructions</h2>
+      <ol>
+        <li>
+          <strong>For Clubs Enter the name in club email address Club Email format:</strong><br />
+          Example: If your club email is <strong>club_name&#64;edu.in</strong>, you should only enter <strong>club_name</strong> in the Club ID field.
+        </li>
+        <li>Please enter valid details in order to maintain consistency and harmony</li>
+        <li>If account details are found to be invalid then that account shall be suspended indefinitely</li>
+      </ol>
+    </div>
+
+    <div class="form-group">
+      <label>What are you signing up as?</label>
+      <div class="name-row">
+        <button type="button" (click)="selectType('individual')" [ngClass]="{'selected': userType === 'individual'}">Individual</button>
+        <button type="button" (click)="selectType('club')" [ngClass]="{'selected': userType === 'club'}">Club</button>
+      </div>
+    </div>
+
+    <!-- INDIVIDUAL REGISTRATION FORM -->
+    <form *ngIf="userType === 'individual'" [formGroup]="individualForm" (ngSubmit)="onSubmitIndividual()">
+      <div class="form-group">
+        <label for="userId">User ID</label>
+        <input id="userId" formControlName="userId" type="text" placeholder="User ID" />
+        <div *ngIf="individualForm.get('userId')?.invalid && individualForm.get('userId')?.touched" class="error-message">
+          User ID is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" formControlName="email" type="email" placeholder="Email" />
+        <div *ngIf="individualForm.get('email')?.invalid && individualForm.get('email')?.touched" class="error-message">
+          Valid email is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input id="password" formControlName="password" type="password" placeholder="Password" />
+        <div *ngIf="individualForm.get('password')?.invalid && individualForm.get('password')?.touched" class="error-message">
+          Password is required (minimum 6 characters)
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input id="confirmPassword" formControlName="confirmPassword" type="password" placeholder="Confirm Password" />
+        <div *ngIf="individualForm.get('confirmPassword')?.invalid && individualForm.get('confirmPassword')?.touched" class="error-message">
+          Confirm password is required
+        </div>
+        <div *ngIf="individualForm.errors?.['passwordMismatch'] && individualForm.get('confirmPassword')?.touched" class="error-message">
+          Passwords don't match
+        </div>
+      </div>
+
+      <div class="name-row">
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input id="firstName" formControlName="firstName" type="text" placeholder="First Name" />
+          <div *ngIf="individualForm.get('firstName')?.invalid && individualForm.get('firstName')?.touched" class="error-message">
+            First name is required
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input id="lastName" formControlName="lastName" type="text" placeholder="Last Name" />
+          <div *ngIf="individualForm.get('lastName')?.invalid && individualForm.get('lastName')?.touched" class="error-message">
+            Last name is required
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="bio">Bio</label>
+        <input id="bio" formControlName="bio" type="text" placeholder="Bio" />
+      </div>
+
+      <div class="name-row">
+        <div class="form-group">
+          <label for="city">City</label>
+          <input id="city" formControlName="city" type="text" placeholder="City" />
+        </div>
+        <div class="form-group">
+          <label for="state">State</label>
+          <input id="state" formControlName="state" type="text" placeholder="State" />
+        </div>
+      </div>
+
+      <div class="name-row">
+        <div class="form-group">
+          <label for="country">Country</label>
+          <input id="country" formControlName="country" type="text" placeholder="Country" />
+        </div>
+        <div class="form-group">
+          <label for="gender">Gender</label>
+          <select id="gender" formControlName="gender">
+            <option value="">Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="birthDate">Birthdate</label>
+        <input id="birthDate" formControlName="birthDate" type="date" />
+      </div>
+
+      <div class="name-row">
+        <div class="form-group">
+          <label for="degree">Degree</label>
+          <input id="degree" formControlName="degree" type="text" placeholder="Degree" />
+        </div>
+        <div class="form-group">
+          <label for="department">Department</label>
+          <input id="department" formControlName="department" type="text" placeholder="Department" />
+        </div>
+      </div>
+
+      <div class="name-row">
+        <div class="form-group">
+          <label for="batch">Batch</label>
+          <input id="batch" formControlName="batch" type="text" placeholder="Batch" />
+        </div>
+        <div class="form-group">
+          <label for="role">Role</label>
+          <select id="role" formControlName="role">
+            <option value="">Select Role</option>
+            <option value="STUDENT">Student</option>
+            <option value="FACULTY">Faculty</option>
+            <option value="ADMIN">Admin</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="profilePic">Profile Picture</label>
+        <input id="profilePic" type="file" (change)="onProfilePicChange($event)" accept="image/*" />
+      </div>
+
+      <button type="submit" class="register-button" [disabled]="individualForm.invalid || isLoading">
+        <span *ngIf="!isLoading">Register</span>
+        <span *ngIf="isLoading">Registering...</span>
+      </button>
+    </form>
+
+    <!-- CLUB REGISTRATION FORM -->
+    <form *ngIf="userType === 'club'" [formGroup]="clubForm" (ngSubmit)="onSubmitClub()">
+      <div class="form-group">
+        <label for="clubId">Club ID</label>
+        <input id="clubId" formControlName="clubId" type="text" placeholder="Enter club_name from club_name@edu.in" />
+        <div *ngIf="clubForm.get('clubId')?.invalid && clubForm.get('clubId')?.touched" class="error-message">
+          Club ID is required
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="clubEmail">Email</label>
+        <input id="clubEmail" formControlName="email" type="email" placeholder="Email" />
+        <div *ngIf="clubForm.get('email')?.invalid && clubForm.get('email')?.touched" class="error-message">
+          Valid email is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="clubPassword">Password</label>
+        <input id="clubPassword" formControlName="password" type="password" placeholder="Password" />
+        <div *ngIf="clubForm.get('password')?.invalid && clubForm.get('password')?.touched" class="error-message">
+          Password is required (minimum 6 characters)
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="clubConfirmPassword">Confirm Password</label>
+        <input id="clubConfirmPassword" formControlName="confirmPassword" type="password" placeholder="Confirm Password" />
+        <div *ngIf="clubForm.get('confirmPassword')?.invalid && clubForm.get('confirmPassword')?.touched" class="error-message">
+          Confirm password is required
+        </div>
+        <div *ngIf="clubForm.errors?.['passwordMismatch'] && clubForm.get('confirmPassword')?.touched" class="error-message">
+          Passwords don't match
+        </div>
+      </div>
+
+      <div class="name-row">
+        <div class="form-group">
+          <label for="clubFirstName">First Name</label>
+          <input id="clubFirstName" formControlName="firstName" type="text" placeholder="Club First Name" />
+          <div *ngIf="clubForm.get('firstName')?.invalid && clubForm.get('firstName')?.touched" class="error-message">
+            First name is required
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="clubLastName">Last Name</label>
+          <input id="clubLastName" formControlName="lastName" type="text" placeholder="Club Last Name" />
+          <div *ngIf="clubForm.get('lastName')?.invalid && clubForm.get('lastName')?.touched" class="error-message">
+            Last name is required
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" formControlName="description" placeholder="Club Description" rows="4"></textarea>
+        <div *ngIf="clubForm.get('description')?.invalid && clubForm.get('description')?.touched" class="error-message">
+          Description is required
+        </div>
+      </div>
+
+      <button type="submit" class="register-button" [disabled]="clubForm.invalid || isLoading">
+        <span *ngIf="!isLoading">Register Club</span>
+        <span *ngIf="isLoading">Registering...</span>
+      </button>
+    </form>
+
+    <div class="login-prompt">
+      Already have an account?
+      <button type="button" class="login-link" (click)="goToLogin()">Login</button>
+    </div>
+  </div>
+</div>

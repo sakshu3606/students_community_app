@@ -1,0 +1,157 @@
+<div class="posts-container">
+    <!-- Header with filter tabs -->
+    <div class="posts-header">
+      <h1>Student Community Posts</h1>
+      
+      <div class="filter-tabs">
+        <button class="filter-tab" [class.active]="selectedFilter === 'all'" (click)="setFilter('all')">
+          <i class="material-icons">view_list</i> All Posts
+        </button>
+        <button class="filter-tab" [class.active]="selectedFilter === 'following'" (click)="setFilter('following')">
+          <i class="material-icons">people</i> Following
+        </button>
+        <button class="filter-tab" [class.active]="selectedFilter === 'top'" (click)="setFilter('top')">
+          <i class="material-icons">trending_up</i> Top Posts
+        </button>
+        <button class="filter-tab" [class.active]="selectedFilter === 'my'" (click)="setFilter('my')">
+          <i class="material-icons">person</i> My Posts
+        </button>
+      </div>
+      
+      <!-- Search bar -->
+      <div class="search-container">
+        <input 
+          type="text" 
+          [(ngModel)]="searchQuery" 
+          placeholder="Search posts..." 
+          class="search-input"
+          (keyup.enter)="onSearch()"
+        >
+        <button class="search-button" (click)="onSearch()">
+          <i class="material-icons">search</i>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Create Post Button -->
+    <div class="create-post-button-container">
+      <button class="create-post-button" (click)="openCreatePostModal()">
+        <i class="material-icons">add</i> Create New Post
+      </button>
+    </div>
+    
+    <!-- Loading indicator -->
+    <div class="loading-container" *ngIf="loading">
+      <div class="loading-spinner"></div>
+      <p>Loading posts...</p>
+    </div>
+    
+    <!-- Error message -->
+    <div class="error-message" *ngIf="errorMessage">
+      <i class="material-icons">error</i>
+      {{ errorMessage }}
+    </div>
+    
+    <!-- No posts message -->
+    <div class="no-posts-message" *ngIf="!loading && filteredPosts.length === 0">
+      <i class="material-icons">sentiment_dissatisfied</i>
+      <p>No posts found. Be the first to create one!</p>
+    </div>
+    
+    <!-- Posts list -->
+    <div class="posts-list" *ngIf="!loading && filteredPosts.length > 0">
+      <div class="post-card" *ngFor="let post of filteredPosts">
+        <!-- Post header -->
+        <div class="post-header">
+          <div class="user-info">
+            <img [src]="post.user.profileImage || '/assets/default-avatar.png'" alt="User profile" class="user-avatar">
+            <div class="user-details">
+              <h3 class="username">{{ post.user.username }}</h3>
+              <p class="post-date">{{ formatDate(post.createdAt) }}</p>
+            </div>
+          </div>
+          
+          <!-- Category badge -->
+          <div class="category-badge" *ngIf="post.category">
+            <i class="material-icons category-icon">
+              {{ post.category === 'general' ? 'chat' : 
+                 post.category === 'academic' ? 'school' : 
+                 post.category === 'club' ? 'groups' : 
+                 post.category === 'event' ? 'event' : 'poll' }}
+            </i>
+            <span>{{ post.category | titlecase }}</span>
+          </div>
+          
+          <!-- Post actions dropdown for owner -->
+          <div class="post-actions" *ngIf="isMyPost(post)">
+            <button class="actions-button">
+              <i class="material-icons">more_vert</i>
+            </button>
+            <div class="actions-dropdown">
+              <button class="action-item delete" (click)="deletePost(post)">
+                <i class="material-icons">delete</i> Delete
+              </button>
+              <!-- Add edit functionality if needed -->
+            </div>
+          </div>
+        </div>
+        
+        <!-- Post content -->
+        <div class="post-content">
+          <h2 class="post-title" *ngIf="post.title">{{ post.title }}</h2>
+          <p class="post-text">{{ post.content }}</p>
+          
+          <!-- Post image if available -->
+          <div class="post-image" *ngIf="post.imageUrl">
+            <img [src]="post.imageUrl" alt="Post image">
+          </div>
+          
+          <!-- Tags -->
+          <div class="post-tags" *ngIf="post.tags && post.tags.length > 0">
+            <span class="tag" *ngFor="let tag of post.tags">
+              #{{ tag }}
+            </span>
+          </div>
+        </div>
+        
+        <!-- Post footer with like button and count -->
+        <div class="post-footer">
+          <button class="like-button" (click)="likePost(post)">
+            <i class="material-icons">thumb_up</i>
+            <span>{{ post.likes || 0 }} {{ post.likes === 1 ? 'Like' : 'Likes' }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Pagination controls -->
+    <div class="pagination-controls" *ngIf="!loading && totalPages > 1">
+      <button class="pagination-button" [disabled]="currentPage === 0" (click)="changePage(-1)">
+        <i class="material-icons">navigate_before</i> Previous
+      </button>
+      <span class="page-info">
+        Page {{ currentPage + 1 }} of {{ totalPages }}
+      </span>
+      <button class="pagination-button" [disabled]="currentPage === totalPages - 1" (click)="changePage(1)">
+        Next <i class="material-icons">navigate_next</i>
+      </button>
+    </div>
+  </div>
+  
+  <!-- Post Creation Modal -->
+  <app-post-creation 
+    *ngIf="showCreatePostModal" 
+    (closeModal)="closeCreatePostModal()" 
+    (postCreated)="onPostCreated($event)">
+  </app-post-creation>
+    
+  <!-- Success notification -->
+  <div class="notification-container" *ngIf="showSuccessNotification">
+    <div class="notification success">
+      <i class="material-icons">check_circle</i>
+      {{ notificationMessage }}
+      <button class="close-notification" (click)="closeNotification()">
+        <i class="material-icons">close</i>
+      </button>
+    </div>
+  </div>

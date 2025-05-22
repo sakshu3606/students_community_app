@@ -1,0 +1,65 @@
+<div class="home-container">
+  <!-- Show hero only when contribution section is not visible -->
+  <section class="hero-section" *ngIf="!showContributionSection">
+    <div class="hero-text">
+      <h1>All the tools right on your screen</h1>
+      <p>
+        So here we welcome you to the Academics Page which offers a compact view to all the resources an institute as well as the student community has to offer! Dive in and enjoy the journey...
+      </p>
+      <button class="contribute-btn" (click)="onContributeClick()">
+        <i class="bi bi-plus-circle"></i> Contribute</button>
+    </div>
+    <div class="hero-image">
+      <img src="academic.svg" alt="Academic tools illustration">
+    </div>
+  </section>
+
+  <!-- Student Contribution Section -->
+  <div *ngIf="showContributionSection" class="contribution-section">
+    <h2>Student Contributions</h2>
+    <p>Explore posts, shared resources, and academic efforts by fellow students.</p>
+    <app-contribute></app-contribute>
+  </div>
+
+  <!-- Resource cards -->
+  <section class="resources-section">
+    <h2>Checkout available resources</h2>
+    <div class="resources-grid">
+      <div class="resource-card" routerLink="/resources/books">
+        <div class="icon-container">
+          <i class="bi bi-book-fill"></i>
+        </div>
+        <h3>Books</h3>
+      </div>
+      <div class="resource-card" routerLink="/resources/videos">
+        <div class="icon-container">
+          <i class="bi bi-camera-video-fill"></i>
+        </div>
+        <h3>Videos</h3>
+      </div>
+      <div class="resource-card" routerLink="/resources/links">
+        <div class="icon-container">
+          <i class="bi bi-link-45deg"></i>
+        </div>
+        <h3>Useful Links</h3>
+      </div>
+      <div class="resource-card" routerLink="/resources/software">
+        <div class="icon-container">
+          <i class="bi bi-reddit"></i>
+        </div>
+        <h3>Software & Licenses</h3>
+      </div>
+    </div>
+  </section>
+
+  <!-- ChatBox Component - Now positioned as a slide-in sidebar -->
+  <app-chatbox
+    [currentUser]="currentUser"
+    [users]="users"
+    [messages]="messages"
+    [activeChatUser]="activeChatUser"
+    (closeChat)="closeChat()"
+    (openChat)="openChat($event)"
+    (sendNewMessage)="sendMessageFromChatbox($event)"
+  ></app-chatbox>
+</div>

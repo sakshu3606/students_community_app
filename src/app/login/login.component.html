@@ -1,0 +1,73 @@
+<div class="page-container">
+  <div class="left-section">
+    <div class="branding">
+      <img src="logo.jpg" alt="Student Community Logo" class="logo" />
+      <h1>Welcome to Student Community</h1>
+      <p>
+        This is exclusive social network platform. Connect with your friends, seniors and clubs all virtually and get to know the latest of all the college life has to offer!
+      </p>
+    </div>    
+  </div>
+
+  <div class="right-section">
+    <div class="login-card">
+      <h2>Login to your account</h2>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            placeholder="Enter your email"
+          />
+          <div *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.errors" class="error-message">
+            <span *ngIf="loginForm.get('email')?.errors?.['required']">Email is required</span>
+            <span *ngIf="loginForm.get('email')?.errors?.['email']">Enter a valid email</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            formControlName="password"
+            placeholder="Enter your password"
+          />
+          <div *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.errors" class="error-message">
+            <span *ngIf="loginForm.get('password')?.errors?.['required']">Password is required</span>
+            <span *ngIf="loginForm.get('password')?.errors?.['minlength']">Minimum 6 characters</span>
+          </div>
+        </div>
+
+        <div class="form-group checkbox-group">
+          <div class="remember-me">
+            <input type="checkbox" formControlName="rememberMe" id="rememberMe" />
+            <label for="rememberMe">Remember me</label>
+          </div>
+          <!-- Inside your login component template -->
+          <div class="form-group forgot-password">
+           <a [routerLink]="['/forget-password']">Forgot password?</a>
+          </div>
+        </div>
+
+        <div *ngIf="loginError" class="login-error">
+          {{ loginError }}
+        </div>
+
+        <button type="submit" class="login-button" [disabled]="isSubmitting">
+          <span *ngIf="!isSubmitting">Login</span>
+          <span *ngIf="isSubmitting">Logging in...</span>
+        </button>
+        
+        <div class="signup-link">
+          New to Student Community?
+          <a (click)="goToRegister()" class="link">Sign up now</a>
+        </div>
+        
+      </form>
+    </div>
+  </div>
+</div>

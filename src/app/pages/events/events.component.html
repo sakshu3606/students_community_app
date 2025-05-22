@@ -1,0 +1,243 @@
+<!-- events.component.html -->
+<div class="events-container">
+  <div class="header">
+    <h1>Events</h1>
+    <p class="description">Find all the fun and exciting activities happening among the student community here.</p>
+    <button class="create-btn" (click)="toggleCreateForm()">
+      <i class="bi bi-plus-circle"></i>
+      {{ showCreateForm ? 'Cancel' : 'Create New Event' }}
+    </button>
+  </div>
+
+  <!-- Create Event Form -->
+  <div class="event-form-container" *ngIf="showCreateForm">
+    <h2>Create New Event</h2>
+    <form [formGroup]="eventForm" (ngSubmit)="submitEvent()">
+<!-- Add this to each form field, for example the title field: -->
+<div class="form-group">
+  <label for="title">Event Title:</label>
+  <input type="text" id="title" formControlName="title" class="form-control"
+    [ngClass]="{'invalid-field': eventForm.get('title')?.invalid && eventForm.get('title')?.touched}">
+  <div class="error-message" *ngIf="eventForm.get('title')?.invalid && eventForm.get('title')?.touched">
+    Title is required
+  </div>
+</div>
+
+      <div class="form-group">
+        <label for="organizer">Organizer:</label>
+        <input type="text" id="organizer" formControlName="organizer" class="form-control">
+        <div class="error-message" *ngIf="eventForm.get('organizer')?.invalid && eventForm.get('organizer')?.touched">
+          Organizer is required
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="startDate">Start Date:</label>
+          <input type="date" id="startDate" formControlName="startDate" class="form-control">
+          <div class="error-message" *ngIf="eventForm.get('startDate')?.invalid && eventForm.get('startDate')?.touched">
+            Start date is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="endDate">End Date:</label>
+          <input type="date" id="endDate" formControlName="endDate" class="form-control">
+          <div class="error-message" *ngIf="eventForm.get('endDate')?.invalid && eventForm.get('endDate')?.touched">
+            End date is required
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="venue">Venue:</label>
+        <input type="text" id="venue" formControlName="venue" class="form-control">
+        <div class="error-message" *ngIf="eventForm.get('venue')?.invalid && eventForm.get('venue')?.touched">
+          Venue is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="time">Time:</label>
+        <input type="text" id="time" formControlName="time" class="form-control">
+        <div class="error-message" *ngIf="eventForm.get('time')?.invalid && eventForm.get('time')?.touched">
+          Time is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="registerDeadline">Registration Deadline:</label>
+        <input type="date" id="registerDeadline" formControlName="registerDeadline" class="form-control">
+        <div class="error-message" *ngIf="eventForm.get('registerDeadline')?.invalid && eventForm.get('registerDeadline')?.touched">
+          Registration deadline is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="imageUrl">Image URL:</label>
+        <input type="text" id="imageUrl" formControlName="imageUrl" class="form-control">
+      </div>
+
+      <button type="submit" class="submit-btn">Create Event</button>
+    </form>
+  </div>
+
+  <!-- Edit Event Form -->
+  <div class="event-form-container" *ngIf="showEditForm">
+    <h2>Edit Event</h2>
+    <form [formGroup]="eventForm" (ngSubmit)="updateEvent()">
+      <div class="form-group">
+        <label for="edit-title">Event Title:</label>
+        <input type="text" id="edit-title" formControlName="title" class="form-control">
+        <div class="error-message" *ngIf="eventForm.get('title')?.invalid && eventForm.get('title')?.touched">
+          Title is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="edit-organizer">Organizer:</label>
+        <input type="text" id="edit-organizer" formControlName="organizer" class="form-control">
+        <div class="error-message" *ngIf="eventForm.get('organizer')?.invalid && eventForm.get('organizer')?.touched">
+          Organizer is required
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="edit-startDate">Start Date:</label>
+          <input type="date" id="edit-startDate" formControlName="startDate" class="form-control">
+          <div class="error-message" *ngIf="eventForm.get('startDate')?.invalid && eventForm.get('startDate')?.touched">
+            Start date is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="edit-endDate">End Date:</label>
+          <input type="date" id="edit-endDate" formControlName="endDate" class="form-control">
+          <div class="error-message" *ngIf="eventForm.get('endDate')?.invalid && eventForm.get('endDate')?.touched">
+            End date is required
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="edit-venue">Venue:</label>
+        <input type="text" id="edit-venue" formControlName="venue" class="form-control">
+        <div class="error-message" *ngIf="eventForm.get('venue')?.invalid && eventForm.get('venue')?.touched">
+          Venue is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="edit-time">Time:</label>
+        <input type="text" id="edit-time" formControlName="time" class="form-control">
+        <div class="error-message" *ngIf="eventForm.get('time')?.invalid && eventForm.get('time')?.touched">
+          Time is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="edit-registerDeadline">Registration Deadline:</label>
+        <input type="date" id="edit-registerDeadline" formControlName="registerDeadline" class="form-control">
+        <div class="error-message" *ngIf="eventForm.get('registerDeadline')?.invalid && eventForm.get('registerDeadline')?.touched">
+          Registration deadline is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="edit-imageUrl">Image URL:</label>
+        <input type="text" id="edit-imageUrl" formControlName="imageUrl" class="form-control">
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="submit-btn">Update Event</button>
+        <button type="button" class="cancel-btn" (click)="cancelEdit()">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="section-header">
+    <h2>Upcoming events</h2>
+    <div class="filter-dropdown">
+      <div class="dropdown">
+        <button class="btn dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+          {{ timeFilter | titlecase }}
+          <i class="bi bi-chevron-down"></i>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+          <li><a class="dropdown-item" (click)="onFilterChange('all')">All</a></li>
+          <li><a class="dropdown-item" (click)="onFilterChange('today')">Today</a></li>
+          <li><a class="dropdown-item" (click)="onFilterChange('thisWeek')">This Week</a></li>
+          <li><a class="dropdown-item" (click)="onFilterChange('thisMonth')">This Month</a></li>
+          <li><a class="dropdown-item" (click)="onFilterChange('thisYear')">This Year</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="events-wrapper">
+    <div class="event-card" *ngFor="let event of filteredEvents">
+      <div class="event-content">
+        <h3 class="event-title">{{ event.title }}</h3>
+        <p class="event-organizer">Event by {{ event.organizer }}</p>
+        
+        <div class="event-details">
+          <div class="detail-row">
+            <span class="detail-label">Date:</span>
+            <span class="detail-value">{{ formatDateRange(event.startDate, event.endDate) }}</span>
+          </div>
+          
+          <div class="detail-row">
+            <span class="detail-label">Venue:</span>
+            <span class="detail-value">{{ event.venue }}</span>
+          </div>
+          
+          <div class="detail-row">
+            <span class="detail-label">Time:</span>
+            <span class="detail-value">{{ event.time }}</span>
+          </div>
+          
+          <div class="detail-row">
+            <span class="detail-label">Deadline to register:</span>
+            <span class="detail-value">{{ event.registerDeadline | date:'shortTime' }}, {{ event.registerDeadline | date:'dd MMMM yyyy' }}</span>
+          </div>
+          
+          <div class="detail-row">
+            <span class="detail-label">Attendees:</span>
+            <span class="detail-value">{{ event.attendees }}</span>
+          </div>
+        </div>
+        
+        <div class="event-actions">
+          <button class="attend-btn" [class.attending]="event.attending" (click)="toggleAttendance(event)">
+            {{ event.attending ? 'Attending ✓' : 'Attend' }}
+          </button>
+          <div class="management-actions">
+            <button class="edit-btn" (click)="startEditEvent(event)">Edit</button>
+            <!-- Delete button with proper null check -->
+<button class="delete-btn" (click)="deleteEvent(event.id || 0)">Delete</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="event-image">
+        <img [src]="event.imageUrl" alt="{{ event.title }}">
+      </div>
+    </div>
+    
+    <div class="no-events" *ngIf="filteredEvents.length === 0">
+      <p>No events found for the selected time period.</p>
+    </div>
+  </div>
+
+  <!-- ChatBox Component - Now positioned as a slide-in sidebar -->
+  <app-chatbox
+    [currentUser]="currentUser"
+    [users]="users"
+    [messages]="messages"
+    [activeChatUser]="activeChatUser"
+    (closeChat)="closeChat()"
+    (openChat)="openChat($event)"
+    (sendNewMessage)="sendMessageFromChatbox($event)"
+  ></app-chatbox>
+</div>

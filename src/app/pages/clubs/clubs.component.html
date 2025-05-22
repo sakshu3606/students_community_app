@@ -1,0 +1,191 @@
+<!-- clubs.component.html -->
+<div class="clubs-container">
+  <h1 class="clubs-title">Clubs</h1>
+  
+  <p class="clubs-description">
+    Students take and learn the best available from the community itself making the campus a
+    vibrant place to nurture and grow into. These little clubs make the college an organism as with
+    its own city to breed into!
+  </p>
+  
+  <div class="clubs-actions">
+    <button class="create-club-btn" (click)="toggleCreateForm()">
+      <i class="bi bi-plus-circle"></i> Create Club
+    </button>
+    
+    <div class="filter-container">
+      <div class="search-box">
+        <input 
+          type="text" 
+          [(ngModel)]="searchQuery" 
+          (input)="search()"
+          placeholder="Search clubs..."
+        >
+        <button class="clear-search" *ngIf="searchQuery" (click)="clearSearch()">
+          <i class="bi bi-x-circle"></i>
+        </button>
+      </div>
+      
+      <div class="category-filter">
+        <label>Category:</label>
+        <select [(ngModel)]="selectedCategory" (change)="filterClubs()">
+          <option value="All">All Categories</option>
+          <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+        </select>
+      </div>
+      
+      <div class="online-filter">
+        <label>
+          <input 
+            type="checkbox" 
+            [(ngModel)]="showOnlineOnly" 
+            (change)="filterClubs()"
+          >
+          Online Clubs Only
+        </label>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Loading indicator -->
+  <div class="loading-container" *ngIf="isLoading">
+    <div class="spinner">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error alert -->
+  <div class="alert alert-danger" *ngIf="error">
+    {{ error }}
+    <button class="close-alert" (click)="error = null">×</button>
+  </div>
+  
+  <!-- Create Club Form -->
+  <div class="club-form-container" *ngIf="showCreateForm">
+    <div class="club-form">
+      <h2>Create New Club</h2>
+      
+      <div class="form-group">
+        <label for="clubFirstname">Club First Name</label>
+        <input 
+          type="text" 
+          id="clubFirstname" 
+          [(ngModel)]="newClub.firstname" 
+          placeholder="Enter club first name"
+        >
+      </div>
+      
+      <div class="form-group">
+        <label for="clubLastname">Club Last Name</label>
+        <input 
+          type="text" 
+          id="clubLastname" 
+          [(ngModel)]="newClub.lastname" 
+          placeholder="Enter club last name"
+        >
+      </div>
+      
+      <div class="form-group">
+        <label for="clubDescription">Description</label>
+        <textarea 
+          id="clubDescription" 
+          [(ngModel)]="newClub.description" 
+          placeholder="Describe your club..."
+          rows="4"
+        ></textarea>
+      </div>
+      
+      <div class="form-actions">
+        <button class="cancel-btn" (click)="toggleCreateForm()">Cancel</button>
+        <button class="submit-btn" (click)="createClub()">Create Club</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Edit Club Form -->
+  <div class="club-form-container" *ngIf="showEditForm">
+    <div class="club-form">
+      <h2>Edit Club</h2>
+      
+      <div class="form-group">
+        <label for="editClubFirstname">Club First Name</label>
+        <input 
+          type="text" 
+          id="editClubFirstname" 
+          [(ngModel)]="editingClub.firstname" 
+          placeholder="Enter club first name"
+        >
+      </div>
+      
+      <div class="form-group">
+        <label for="editClubLastname">Club Last Name</label>
+        <input 
+          type="text" 
+          id="editClubLastname" 
+          [(ngModel)]="editingClub.lastname" 
+          placeholder="Enter club last name"
+        >
+      </div>
+      
+      <div class="form-group">
+        <label for="editClubDescription">Description</label>
+        <textarea 
+          id="editClubDescription" 
+          [(ngModel)]="editingClub.description" 
+          placeholder="Describe your club..."
+          rows="4"
+        ></textarea>
+      </div>
+      
+      <div class="form-actions">
+        <button class="cancel-btn" (click)="closeEditForm()">Cancel</button>
+        <button class="submit-btn" (click)="updateClub()">Update Club</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- No clubs message -->
+  <div class="no-clubs-message" *ngIf="filteredClubs.length === 0">
+    <p>No clubs found with the current filters. Try changing your search criteria or create a new club!</p>
+  </div>
+  
+  <!-- Clubs Grid -->
+  <div class="clubs-grid">
+    <div class="club-card" *ngFor="let club of filteredClubs">
+      <div class="club-content">
+        <h3 class="club-name">{{ club.firstname }} {{ club.lastname }}</h3>
+        
+        <div class="club-info">
+          <span class="club-created">Created: {{ club.createdAt | date:'medium' }}</span>
+        </div>
+        
+        <p class="club-description">{{ club.description }}</p>
+        
+        <div class="club-actions">
+          <button class="view-btn">View club page</button>
+          <div class="admin-actions">
+            <button class="edit-btn" (click)="openEditForm(club)">
+              <i class="bi bi-pencil-square"></i>
+            </button>
+            <button class="delete-btn" *ngIf="club.clubId !== undefined" (click)="deleteClub(club.clubId)">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ChatBox Component - Now positioned as a slide-in sidebar -->
+  <app-chatbox
+    [currentUser]="currentUser"
+    [users]="users"
+    [messages]="messages"
+    [activeChatUser]="activeChatUser"
+    (closeChat)="closeChat()"
+    (openChat)="openChat($event)"
+    (sendNewMessage)="sendMessageFromChatbox($event)"
+  ></app-chatbox>
+</div>

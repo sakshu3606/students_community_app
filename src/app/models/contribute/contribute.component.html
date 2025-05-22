@@ -1,0 +1,188 @@
+<!-- contribute.component.html -->
+<div class="contribute-page">
+  <div class="header-section">
+    <div class="container">
+      <h1>Academic Resource Contributions</h1>
+      <p class="description">Share valuable resources with fellow students and help build our knowledge base. Your contributions make a difference in the academic community.</p>
+    </div>
+  </div>
+  
+  <div class="container">
+    <div class="tabs-container">
+      <div class="tabs">
+        <button [ngClass]="{'active': activeTab === 'form'}" (click)="setActiveTab('form')">
+          <i class="fa fa-plus-circle"></i> Contribute
+        </button>
+        <button [ngClass]="{'active': activeTab === 'recent'}" (click)="setActiveTab('recent')">
+          <i class="fa fa-clock"></i> Recent
+        </button>
+        <button [ngClass]="{'active': activeTab === 'contributors'}" (click)="setActiveTab('contributors')">
+          <i class="fa fa-users"></i> Top Contributors
+        </button>
+        <button [ngClass]="{'active': activeTab === 'guidelines'}" (click)="setActiveTab('guidelines')">
+          <i class="fa fa-info-circle"></i> Guidelines
+        </button>
+      </div>
+    </div>
+    
+    <!-- Contribute Form Tab -->
+    <div class="tab-content" *ngIf="activeTab === 'form'">
+      <div class="form-container">
+        <h2>Submit a Resource</h2>
+        <p class="form-intro">Fill out the form below to share an academic resource with the community.</p>
+        
+        <form [formGroup]="contributionForm" (ngSubmit)="onSubmit()" class="contribution-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Your Name</label>
+              <input type="text" id="name" formControlName="name" class="form-control" 
+                [ngClass]="{'invalid': submitted && contributionForm.get('name')?.errors}">
+              <div *ngIf="submitted && contributionForm.get('name')?.errors" class="error-message">
+                Name is required
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" formControlName="email" class="form-control"
+                [ngClass]="{'invalid': submitted && contributionForm.get('email')?.errors}">
+              <div *ngIf="submitted && contributionForm.get('email')?.errors" class="error-message">
+                Valid email is required
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="resourceType">Resource Type</label>
+            <select id="resourceType" formControlName="resourceType" class="form-control"
+              [ngClass]="{'invalid': submitted && contributionForm.get('resourceType')?.errors}">
+              <option value="">Select a resource type</option>
+              <option *ngFor="let type of resourceTypes" [value]="type.id">{{type.name}}</option>
+            </select>
+            <div *ngIf="submitted && contributionForm.get('resourceType')?.errors" class="error-message">
+              Resource type is required
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="title">Resource Title</label>
+            <input type="text" id="title" formControlName="title" class="form-control"
+              [ngClass]="{'invalid': submitted && contributionForm.get('title')?.errors}">
+            <div *ngIf="submitted && contributionForm.get('title')?.errors" class="error-message">
+              Title is required
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" formControlName="description" class="form-control" rows="4"
+              [ngClass]="{'invalid': submitted && contributionForm.get('description')?.errors}"></textarea>
+            <div *ngIf="submitted && contributionForm.get('description')?.errors" class="error-message">
+              Description is required
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="link">Resource Link</label>
+            <input type="url" id="link" formControlName="link" class="form-control" placeholder="https://"
+              [ngClass]="{'invalid': submitted && contributionForm.get('link')?.errors}">
+            <div *ngIf="submitted && contributionForm.get('link')?.errors?.['required']" class="error-message">
+              Link is required
+            </div>
+            <div *ngIf="submitted && contributionForm.get('link')?.errors?.['pattern']" class="error-message">
+              Link must be a valid URL starting with http:// or https://
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="additionalInfo">Additional Information (Optional)</label>
+            <textarea id="additionalInfo" formControlName="additionalInfo" class="form-control" rows="3"
+              placeholder="Provide any additional context or details that would be helpful"></textarea>
+          </div>
+          
+          <button type="submit" class="submit-btn" [disabled]="contributionForm.invalid">
+            Submit Contribution
+          </button>          
+        </form>
+        
+        <div *ngIf="success" class="success-message">
+          <i class="fa fa-check-circle"></i>
+          Your contribution has been submitted successfully! Thank you for contributing to the academic community.
+        </div>
+      </div>
+    </div>
+    
+    <!-- Recent Contributions Tab -->
+    <div class="tab-content" *ngIf="activeTab === 'recent'">
+      <div class="recent-contributions">
+        <h2>Recent Contributions</h2>
+        <p class="section-intro">Check out the latest resources contributed by students:</p>
+        
+        <div class="contributions-list">
+          <div class="contribution-card" *ngFor="let contribution of recentContributions">
+            <div class="contribution-header">
+              <span class="resource-badge" [attr.data-type]="contribution.resourceType">
+                {{ getResourceTypeName(contribution.resourceType) }}
+              </span>
+              <span class="contribution-date">{{ formatDate(contribution.date) }}</span>
+            </div>
+            <h3 class="contribution-title">{{ contribution.title }}</h3>
+            <p class="contribution-description">{{ contribution.description }}</p>
+            <div class="contribution-footer">
+              <span class="contributor-name">Contributed by: {{ contribution.name }}</span>
+              <button class="view-btn">View Resource</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Top Contributors Tab -->
+    <div class="tab-content" *ngIf="activeTab === 'contributors'">
+      <div class="top-contributors">
+        <h2>Top Contributors</h2>
+        <p class="section-intro">Recognizing students who have shared the most valuable resources:</p>
+        
+        <div class="contributors-list">
+          <div class="contributor-card" *ngFor="let contributor of topContributors">
+            <div class="rank-badge" [attr.data-rank]="contributor.rank">{{ contributor.rank }}</div>
+            <div class="contributor-info">
+              <h3 class="contributor-name">{{ contributor.name }}</h3>
+              <p class="contribution-count">{{ contributor.contributions }} Contributions</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Guidelines Tab -->
+    <div class="tab-content" *ngIf="activeTab === 'guidelines'">
+      <div class="guidelines">
+        <h2>Contribution Guidelines</h2>
+        <p class="section-intro">Please follow these guidelines to ensure your contributions are valuable to the community:</p>
+        
+        <div class="guidelines-content">
+          <div class="guideline-item">
+            <h3><i class="fa fa-check-circle"></i> Quality Standards</h3>
+            <p>Submit resources that are academically sound, accurate, and valuable for learning. Resources should be from reputable sources and relevant to university-level studies.</p>
+          </div>
+          
+          <div class="guideline-item">
+            <h3><i class="fa fa-copyright"></i> Copyright Compliance</h3>
+            <p>Ensure that shared resources respect copyright laws. Link to legally available content or open educational resources. Do not share pirated materials or content behind paywalls.</p>
+          </div>
+          
+          <div class="guideline-item">
+            <h3><i class="fa fa-tags"></i> Proper Categorization</h3>
+            <p>Select the appropriate resource type for your contribution to help others find relevant materials efficiently. Provide clear descriptions that explain the content and its value.</p>
+          </div>
+          
+          <div class="guideline-item">
+            <h3><i class="fa fa-user-check"></i> Verification Process</h3>
+            <p>Submitted resources go through a verification process by moderators before being published. This ensures the quality and appropriateness of all shared materials.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
